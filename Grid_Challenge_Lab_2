@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+string gridChallenge(vector<string> grid) {
+    int n = grid.size();
+    
+    for (int i = 0; i < n; i++) {
+        sort(grid[i].begin(), grid[i].end());
+    }
+    
+    for (int col = 0; col < n; col++) {
+        for (int row = 1; row < n; row++) {
+            if (grid[row][col] < grid[row - 1][col]) {
+                return "NO";
+            }
+        }
+    }
+    
+    return "YES";
+}
+
+int main() {
+    string input;
+    getline(cin, input);
+    
+    size_t firstComma = input.find(',');
+    string recordCount = input.substr(0, firstComma);
+    
+    size_t spacePos = input.find(' ', firstComma + 1);
+    string gridSize = input.substr(firstComma + 1, spacePos - firstComma - 1);
+    
+    vector<string> grid;
+    size_t start = spacePos + 1;
+    while (start < input.length()) {
+        size_t end = input.find(',', start);
+        if (end == string::npos) {
+            end = input.length();
+        }
+        grid.push_back(input.substr(start, end - start));
+        start = end + 1;
+    }
+    
+    cout << gridChallenge(grid) << endl;
+    
+    return 0;
+}
